@@ -1,28 +1,100 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Form, Header, Segment } from 'semantic-ui-react';
+import cuid from 'cuid';
 
-const EventForm = ({ setFormOpen }) => {
+const EventForm = ({
+  setFormOpen,
+  createEvent,
+  selectedEvent,
+  updateEvent,
+}) => {
+  const initalInputs = selectedEvent ?? {
+    title: '',
+    category: '',
+    description: '',
+    city: '',
+    venue: '',
+    date: '',
+  };
+
+  const [values, setValues] = useState(initalInputs);
+
+  const changeHandler = (e) => {
+    const { name, value } = e.target;
+    setValues({ ...values, [name]: value });
+  };
+
+  const onHandlerSubmit = (e) => {
+    e.preventDefault();
+    selectedEvent
+      ? updateEvent({ ...selectedEvent, ...values })
+      : createEvent({
+          ...values,
+          id: cuid(),
+          attendees: [],
+          hostedBy: 'Bob',
+          hostPhotoURL: '/assets/user.png',
+        });
+
+    setFormOpen(false);
+  };
   return (
     <Segment clearing>
-      <Header content="Create new event" />
-      <Form>
+      <Header content={selectedEvent ? 'Edit the event' : 'Create new event'} />
+      <Form onSubmit={onHandlerSubmit}>
         <Form.Field>
-          <input type="text" placeholder="Event title" />
+          <input
+            type="text"
+            placeholder="Event title"
+            name="title"
+            value={values.title}
+            onChange={changeHandler}
+          />
         </Form.Field>
         <Form.Field>
-          <input type="text" placeholder="Category" />
+          <input
+            type="text"
+            placeholder="Category"
+            name="category"
+            value={values.category}
+            onChange={changeHandler}
+          />
         </Form.Field>
         <Form.Field>
-          <input type="text" placeholder="Description" />
+          <input
+            type="text"
+            placeholder="Description"
+            name="description"
+            value={values.description}
+            onChange={changeHandler}
+          />
         </Form.Field>
         <Form.Field>
-          <input type="text" placeholder="City" />
+          <input
+            type="text"
+            placeholder="City"
+            name="city"
+            value={values.city}
+            onChange={changeHandler}
+          />
         </Form.Field>
         <Form.Field>
-          <input type="text" placeholder="Venu" />
+          <input
+            type="text"
+            placeholder="Venu"
+            name="venue"
+            value={values.venue}
+            onChange={changeHandler}
+          />
         </Form.Field>
         <Form.Field>
-          <input type="date" placeholder="Date" />
+          <input
+            type="date"
+            placeholder="Date"
+            name="date"
+            value={values.date}
+            onChange={changeHandler}
+          />
         </Form.Field>
         <Button type="submit" floated="right" positive content="Submit" />
         <Button

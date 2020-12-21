@@ -19,7 +19,7 @@ const NavBar = ({ setFormOpen }) => {
             positive
             inverted
             content="Create Event"
-            onClick={() => setFormOpen(true)}
+            onClick={() => setFormOpen()}
           />
         </Menu.Item>
         <Menu.Item position="right">
