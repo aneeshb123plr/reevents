@@ -5,13 +5,23 @@ import './app/layout/style.css';
 import App from './app/layout/App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
+import { configStore } from './app/store/configStore';
+import { Provider } from 'react-redux';
+import ScrollToTop from './app/layout/ScrollToTop';
 
+const store = configStore();
 const rootEl = document.getElementById('root');
+
+console.log(store.getState());
+
 function render() {
   ReactDOM.render(
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>,
+    <Provider store={store}>
+      <BrowserRouter>
+        <ScrollToTop />
+        <App />
+      </BrowserRouter>
+    </Provider>,
     rootEl
   );
 }
